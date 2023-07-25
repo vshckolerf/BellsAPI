@@ -1,5 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import bcrypt from "bcrypt";
+import { createHash } from "crypto";
 
 @Entity()
 export class School extends BaseEntity {
@@ -15,9 +15,11 @@ export class School extends BaseEntity {
     @Column()
     auth_secret: string;
 
-    // bcrypt(UUID+SECRET+random)
+    // sha256(UUID+SECRET+random)
     static async authorizate(uuid : string, random : string, token : string) : Promise<boolean> {
         const school = await this.findOneBy({uuid:uuid});
-        return await bcrypt.compare(school.uuid + school.auth_secret + random, token);
+        const unhash = school.uuid + school.auth_secret + random
+        const hash = createHash('sha256').update(unhash).digest('hex');
+        return hash === token;
     }
 }

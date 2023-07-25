@@ -36,7 +36,7 @@ export class Connection {
 
                 if(authorized){
                     this.authorized = true;
-                    return "OK"
+                    return "AUTHORIZED"
                 }else{
                     await this.close("Invalid authorization data. Bye bye")
                 }
@@ -50,7 +50,7 @@ export class Connection {
         await this.send("AUTH_REQUEST "+this.auth_random);
         setTimeout(()=>{
             if(this.authorized !== true) this.close("Auth timeout");
-        }, 10000);
+        }, 30000);
     }
 
     constructor(connection) {
