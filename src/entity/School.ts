@@ -1,5 +1,7 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 import { createHash } from "crypto";
+import {Lesson} from "./Lesson";
+import {Sound} from "./Sound";
 
 @Entity()
 export class School extends BaseEntity {
@@ -14,6 +16,12 @@ export class School extends BaseEntity {
 
     @Column()
     auth_secret: string;
+
+    @OneToMany(()=>Lesson, (lesson) => lesson.school)
+    lessons: Lesson[]
+
+    @OneToMany(()=>Sound, (sound) => sound.school)
+    sounds: Sound[]
 
     // sha256(UUID+SECRET+random)
     static async authorizate(uuid : string, random : string, token : string) : Promise<boolean> {
