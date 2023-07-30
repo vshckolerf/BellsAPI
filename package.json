@@ -12,6 +12,7 @@
    "dependencies": {
       "@types/ws": "^8.5.5",
       "dotenv": "^16.3.1",
+      "ntp-time-sync": "^0.3.0",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.3.17",

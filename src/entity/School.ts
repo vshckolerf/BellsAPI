@@ -2,6 +2,7 @@ import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typ
 import { createHash } from "crypto";
 import {Lesson} from "./Lesson";
 import {Sound} from "./Sound";
+import {ClassRange} from "./ClassRange";
 
 @Entity()
 export class School extends BaseEntity {
@@ -17,8 +18,8 @@ export class School extends BaseEntity {
     @Column()
     auth_secret: string;
 
-    @OneToMany(()=>Lesson, (lesson) => lesson.school)
-    lessons: Lesson[]
+    @OneToMany(()=>ClassRange, (class_range) => class_range.school)
+    class_ranges: ClassRange[]
 
     @OneToMany(()=>Sound, (sound) => sound.school)
     sounds: Sound[]
