@@ -1,4 +1,14 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, OneToOne, JoinColumn, BaseEntity} from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    JoinColumn,
+    BaseEntity,
+    JoinTable
+} from "typeorm";
 import {School} from "./School";
 import {Lesson} from "./Lesson";
 import {Sound} from "./Sound";
@@ -12,11 +22,12 @@ export class ClassRange extends BaseEntity  {
     school: School
 
     @OneToMany(()=>Lesson, (lesson) => lesson.class_range)
+    @JoinColumn()
     lessons: Lesson[]
 
-    @ManyToOne(() => Sound)
+    @ManyToOne(() => Sound, {eager: true})
     start_sound: Sound
 
-    @ManyToOne(() => Sound)
+    @ManyToOne(() => Sound, {eager: true})
     end_sound: Sound
 }

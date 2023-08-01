@@ -1,5 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity} from "typeorm";
-import {School} from "./School";
+import {BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Sound} from "./Sound";
 import {ClassRange} from "./ClassRange";
 
@@ -21,7 +20,10 @@ export class Lesson extends BaseEntity {
     @Column()
     end_minute: number;
 
-    @ManyToOne(() => ClassRange, (class_range) => class_range.lessons)
+    @ManyToOne(() => ClassRange, (class_range) => class_range.lessons, {
+        eager: true,
+    })
+    @JoinColumn()
     class_range: ClassRange;
 
     static async getLessonsByStartTime(hour, minute){
@@ -32,11 +34,24 @@ export class Lesson extends BaseEntity {
         return await this.findBy({ end_hour: hour, end_minute: minute });
     }
 
-    getStartSound =  () => {
-        return this.class_range.start_sound
-    }
 
-    getEndSound =  () => {
-        return this.class_range.end_sound
-    }
+    // static async getClassRange (uuid) {
+    //     return await Lesson.createQueryBuilder("lesson")
+    //         .leftJoinAndSelect("lesson.class_range", "class_range")
+    //         .where("lesson.uuid = :uuid", { this })
+    //         .getMany();
+    // }
+    //
+    // getStartSound () {
+    //     Lesson.getClassRange().then(console.log)
+    //     return new Sound()//this.getClassRange()
+    // }
+    //
+    // getEndSound () {
+    //     return this.class_range.end_sound
+    // }
+    //
+    // getSchool = () => {
+    //     return this.class_range.school
+    // }
 }

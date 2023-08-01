@@ -1,5 +1,6 @@
-import WebSocket, {WebSocketServer} from "ws";
+import WebSocket, {ServerOptions, WebSocketServer} from "ws";
 import {Connection} from "./Connection";
+import {IncomingMessage} from "http";
 
 interface Connections {
     [key: string]: Connection
@@ -14,8 +15,8 @@ export class ConnectionManager {
         return created_connection.uuid;
     }
 
-    constructor (server_properties) {
-        this.wsServer = new WebSocketServer(server_properties);
+    constructor (server_properties, callback = ()=>{}) {
+        this.wsServer = new WebSocketServer(server_properties, callback);
         this.wsServer.on("connection", connection => {
             const connection_uuid = this.newConnection(connection);
             connection.on("close", ()=>{
@@ -24,4 +25,16 @@ export class ConnectionManager {
         });
     }
 
+    getConnectionBySchoolUUID(uuid : string) {
+        return Object.values(this.connections).find(e => e.school_uuid === uuid && e.authorized)
+    }
+
+    async sendToSchool(uuid : string, msg : string){
+        const school = this.getConnectionBySchoolUUID(uuid);
+        if (school === undefined){
+            return false;
+        }
+        await school.send(msg)
+        return true;
+    }
 }

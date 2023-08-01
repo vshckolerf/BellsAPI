@@ -5,9 +5,9 @@ import {School} from "../entity/School";
 export class Connection {
     public uuid : string;
     public school_uuid : string;
+    public authorized = false;
 
     private auth_random : string;
-    private authorized = false;
     private connection : WebSocket;
 
    async msgHandler (msg): Promise<string>{
