@@ -18,7 +18,7 @@
       "typeorm": "0.3.17",
       "uuid": "^9.0.0",
       "uuid4": "^2.0.3",
-      "ws": "^8.13.0"
+      "ws": "^8.17.1"
    },
    "scripts": {
       "dev": "tsc-watch src/index.ts --esModuleInterop --outDir ./dist --onSuccess \"node ./dist/index.js\"",
